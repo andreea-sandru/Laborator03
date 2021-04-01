@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PhoneDialerAndroid</string>
+    <string name="phone_error">Error: Phone number is null</string>
 </resources>

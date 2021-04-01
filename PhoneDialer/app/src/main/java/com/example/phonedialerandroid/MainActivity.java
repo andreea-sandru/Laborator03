@@ -14,14 +14,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText phoneNumberEditText;
     private ImageButton b_call, b_close, b_delete;
-    private Button genericButton;
+    private Button genericButton, b_send;
 
     final public static int PERMISSION_REQUEST_CALL_PHONE = 1;
+    final public static int CONTACTS_MANAGER_REQUEST_CODE = 2017;
+
     final public static int buttonIds[] = {
             R.id.b0,
             R.id.b1,
@@ -47,10 +50,25 @@ public class MainActivity extends AppCompatActivity {
         b_call = (ImageButton) findViewById(R.id.b_call);
         b_close = (ImageButton) findViewById(R.id.b_close);
         b_delete = (ImageButton) findViewById(R.id.b_delete);
+        b_send = (Button) findViewById(R.id.b_send);
 
         b_call.setOnClickListener(callImageButtonClickListener);
         b_close.setOnClickListener(hangupImageButtonClickListener);
         b_delete.setOnClickListener(backspaceButtonClickListener);
+
+        b_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phoneNumber = phoneNumberEditText.getText().toString();
+                if (phoneNumber.length() > 0) {
+                    Intent intent = new Intent("com.example.contactsmanager.intent.action.MainActivity");
+                    intent.putExtra("com.example.contactsmanager.PHONE_NUMBER_KEY", phoneNumber);
+                    startActivityForResult(intent, CONTACTS_MANAGER_REQUEST_CODE);
+                } else {
+                    Toast.makeText(getApplication(), getResources().getString(R.string.phone_error), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         for (int i = 0; i < buttonIds.length; i++) {
             genericButton = (Button)findViewById(buttonIds[i]);
